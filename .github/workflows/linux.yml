@@ -14,8 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
       - name: Install python dependencies
-        run: pwd && make help && make env
+        run: make env
 
       - name: Run linting
         run: make lint
