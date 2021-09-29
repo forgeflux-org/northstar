@@ -14,7 +14,7 @@ i: ## Launch app.py in an interactive python shell
 	python -i ./src/app.py
 
 lint: ## Run linter
-	./venv/bin/pylint ./src/*
+	./venv/bin/black ./src/*
 
 help: ## Prints help for targets with comments
 	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

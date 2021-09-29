@@ -19,7 +19,8 @@ from flask import Flask
 
 app = Flask(__name__)
 
+
 @app.route("/")
 async def home():
-    """ Placeholder route"""
+    """Placeholder route"""
     return "Foobar"
