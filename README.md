@@ -1,5 +1,6 @@
 <div align="center">
-  North Star ---  A lookup service for forged fed ecosystem
+  <h1>North Star </h1> 
+  <b>A lookup service for forged fed ecosystem</b>
 </div>
 
 
