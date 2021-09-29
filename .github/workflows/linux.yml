@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Install python dependencies
-        run: make env
+        run: pwd && make help && make env
 
       - name: Run linting
         run: make lint
