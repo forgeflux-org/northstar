@@ -1,16 +1,16 @@
 defualt: ## Run app
-	@source ./venv/bin/activate && FLASK_APP=src/app FLASK_ENV=development flask run
+	@. ./venv/bin/activate && FLASK_APP=src/app FLASK_ENV=development flask run
 
 activate: ## Slip into virtual environment
 	@-virtualenv venv
-	source ./venv/bin/activate
+	. ./venv/bin/activate
 
 freeze:
-	@source ./venv/bin/activate && pip freeze > requirements.txt
+	@. ./venv/bin/activate && pip freeze > requirements.txt
 
 env: ## Install all dependencies
 	@-virtualenv venv
-	source ./venv/bin/activate && pip install -r requirements.txt
+	. ./venv/bin/activate && pip install -r requirements.txt
 
 i: ## Launch app.py in an interactive python shell
 	python -i ./src/app.py
