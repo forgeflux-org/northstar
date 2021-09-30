@@ -1,8 +1,8 @@
 """
 Root file
 """
-# North Star ---  A lookup service for forged fed ecosystem
-# Copyright © 2021 Aravinth Manivannan <realaravinth@batsense.net
+# North Star ---  A lookup service for the forged fed ecosystem
+# Copyright © 2021 Aravinth Manivannan <realaravinth@batsense.net>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ Root file
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
 # You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 from flask import Flask
 
 app = Flask(__name__)

@@ -1,4 +1,4 @@
-defualt: ## Run app
+default: ## Run app
 	@. ./venv/bin/activate && FLASK_APP=src/app FLASK_ENV=development flask run
 
 activate: ## Slip into virtual environment
