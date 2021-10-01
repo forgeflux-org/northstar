@@ -1,0 +1,22 @@
+/api/v1/interface/register:
+  post:
+    tags: 
+      - interface
+    summary: Add an interface to the discovery service
+    operationId: registerInterface
+    requestBody:
+      description: Interface object that needs to be added to the discovery service
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "./schema/register-interface.yaml"
+    responses:
+      '200':
+        description: Successful registration
+      '400':
+        description: Registration failure, interface couldn't be reached via the URL provided
+        content:
+          application/json:
+            schema:
+              $ref: "./response/resgiter-error.yaml"

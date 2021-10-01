@@ -1,0 +1,22 @@
+type: object
+properties:
+  interface_url:
+    description: The publicly accessible URL of the bridge interface
+    type: string
+  forge_url:
+    description: >-
+      The publicly accessible URL of the forge that this interface
+      manages. If a forge is known by more than one URL(separate bug
+      tracker, and different fetch and push URLs for git), then
+      mention them all in this field
+    type: array
+    example:
+      forge_url: [
+          "https://git.sr.ht/~sircmpwn/paste.sr.ht", # readonly
+          "git@git.sr.ht:~sircmpwn/paste.sr.ht", # read-write
+          "https://lists.sr.ht/~sircmpwn/sr.ht-discuss", # mailing list that doubles as bug tracker(?)
+        ]
+      items:
+      type: string
+      example:
+        interface_url: "https://forgedfed-interface.example.com"

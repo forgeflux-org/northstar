@@ -32,3 +32,6 @@ jobs:
 
       - name: Run linting
         run: make lint
+
+      - name: Generate documentation
+        run: make doc
