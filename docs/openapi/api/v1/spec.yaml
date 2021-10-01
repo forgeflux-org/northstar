@@ -19,4 +19,4 @@
         content:
           application/json:
             schema:
-              $ref: "./response/resgiter-error.yaml"
+              $ref: "./response/register-error.yaml"
