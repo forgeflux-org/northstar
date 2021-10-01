@@ -18,5 +18,11 @@ i: ## Launch app.py in an interactive python shell
 lint: ## Run linter
 	./venv/bin/black ./src/*
 
+doc: ## Generate documentation
+	@-rm -rf dist
+	@-mkdir -p dist/openapi/
+	@cd ./docs/openapi/  && yarn install && yarn build
+	@cp -r ./docs/openapi/dist/* dist/openapi/
+
 help: ## Prints help for targets with comments
 	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

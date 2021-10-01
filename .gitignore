@@ -138,3 +138,7 @@ dmypy.json
 cython_debug/
 databse.db
 .env
+
+
+node_modules/
+dist/
