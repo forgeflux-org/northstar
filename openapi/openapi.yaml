@@ -8,7 +8,7 @@ info:
     url: 'https://www.gnu.org/licenses/agpl-3.0-standalone.html'
   contact:
     name: ForgedFed Developers
-    email: 'dat.adithya@gmail.com, realaravinth@batsense.net'
+    email: forgedfed@gmail.com
 servers:
   - url: 'http://example.com'
 tags:
@@ -23,6 +23,9 @@ paths:
       tags:
         - interface
       summary: Add an interface to the discovery service
+      description: |-
+        A forge can have multiple interfaces. North Star is used to map relationships between a forge and the interfaces that operate on it, acting like a telephone direcory.
+        This endpoint is used to register an interface against a forge in North Star
       operationId: registerInterface
       requestBody:
         description: Interface object that needs to be added to the discovery service
@@ -39,14 +42,12 @@ paths:
                   description: 'The publicly accessible URL of the forge that this interface manages. If a forge is known by more than one URL(separate bug tracker, and different fetch and push URLs for git), then mention them all in this field'
                   type: array
                   example:
-                    forge_url:
-                      - 'https://git.sr.ht/~sircmpwn/paste.sr.ht'
-                      - 'git@git.sr.ht:~sircmpwn/paste.sr.ht'
-                      - 'https://lists.sr.ht/~sircmpwn/sr.ht-discuss'
-                    items: null
+                    - 'https://git.sr.ht/~sircmpwn/paste.sr.ht'
+                    - 'git@git.sr.ht:~sircmpwn/paste.sr.ht'
+                    - 'https://lists.sr.ht/~sircmpwn/sr.ht-discuss'
+                  items:
                     type: string
-                    example:
-                      interface_url: 'https://forgedfed-interface.example.com'
+                    example: 'https://forgedfed-interface.example.com'
       responses:
         '200':
           description: Successful registration
