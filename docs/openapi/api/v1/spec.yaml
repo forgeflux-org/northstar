@@ -3,6 +3,12 @@
     tags: 
       - interface
     summary: Add an interface to the discovery service
+    description: >-
+      A forge can have multiple interfaces. North Star is used to map
+      relationships between a forge and the interfaces that operate on it,
+      acting like a telephone direcory.
+
+      This endpoint is used to register an interface against a forge in North Star
     operationId: registerInterface
     requestBody:
       description: Interface object that needs to be added to the discovery service
