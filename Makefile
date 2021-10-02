@@ -18,10 +18,14 @@ i: ## Launch app.py in an interactive python shell
 lint: ## Run linter
 	./venv/bin/black ./src/*
 
+test: ## Run tests
+	@cd ./docs/openapi/  && yarn install 
+	@cd ./docs/openapi/  && yarn test 
+
 doc: ## Generate documentation
 	@-rm -rf dist
 	@-mkdir -p dist/openapi/
-	@cd ./docs/openapi/  && yarn install && yarn build
+	@cd ./docs/openapi/  && yarn install && yarn html
 	@cp -r ./docs/openapi/dist/* dist/openapi/
 
 help: ## Prints help for targets with comments

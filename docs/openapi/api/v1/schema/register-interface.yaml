@@ -11,12 +11,9 @@ properties:
       mention them all in this field
     type: array
     example:
-      forge_url: [
-          "https://git.sr.ht/~sircmpwn/paste.sr.ht", # readonly
-          "git@git.sr.ht:~sircmpwn/paste.sr.ht", # read-write
-          "https://lists.sr.ht/~sircmpwn/sr.ht-discuss", # mailing list that doubles as bug tracker(?)
-        ]
-      items:
+        - "https://git.sr.ht/~sircmpwn/paste.sr.ht" # readonly
+        - "git@git.sr.ht:~sircmpwn/paste.sr.ht" # read-write
+        - "https://lists.sr.ht/~sircmpwn/sr.ht-discuss" # mailing list that doubles as bug tracker(?)
+    items:
       type: string
-      example:
-        interface_url: "https://forgedfed-interface.example.com"
+      example: "https://forgedfed-interface.example.com"

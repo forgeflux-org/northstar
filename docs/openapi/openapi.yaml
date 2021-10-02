@@ -11,7 +11,7 @@ info:
     url: https://www.gnu.org/licenses/agpl-3.0-standalone.html
   contact:
     name: ForgedFed Developers
-    email: dat.adithya@gmail.com, realaravinth@batsense.net
+    email: forgedfed@gmail.com
 servers:
   - url: http://example.com # TODO CHANGE THIS
 tags:
