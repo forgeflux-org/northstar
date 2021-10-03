@@ -17,6 +17,7 @@ i: ## Launch app.py in an interactive python shell
 
 lint: ## Run linter
 	./venv/bin/black ./src/*
+	@cd ./docs/openapi/ && yarn run spectral lint api/*
 
 test: ## Run tests
 	@cd ./docs/openapi/  && yarn install 

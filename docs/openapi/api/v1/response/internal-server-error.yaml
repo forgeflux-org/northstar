@@ -1,0 +1,12 @@
+type: object
+properties:
+  errcode:
+    description: The F_D_INTERNAL_SERVER_ERROR error code
+    type: string
+    example: F_D_INTERNAL_SERVER_ERROR 
+  error:
+    description: A human-readable error message
+    type: string
+    example: >-
+      Operation couldn't be performed due to internal errors. If error
+      persists, please contact admins.

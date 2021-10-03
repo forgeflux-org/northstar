@@ -3,6 +3,7 @@ properties:
   interface_url:
     description: The publicly accessible URL of the bridge interface
     type: string
+    example: https://forgedfed-interface.example.com
   forge_url:
     description: >-
       The publicly accessible URL of the forge that this interface
@@ -11,9 +12,9 @@ properties:
       mention them all in this field
     type: array
     example:
-        - "https://git.sr.ht/~sircmpwn/paste.sr.ht" # readonly
-        - "git@git.sr.ht:~sircmpwn/paste.sr.ht" # read-write
-        - "https://lists.sr.ht/~sircmpwn/sr.ht-discuss" # mailing list that doubles as bug tracker(?)
+        - https://git.sr.ht/~sircmpwn/paste.sr.ht # readonly
+        - git@git.sr.ht:~sircmpwn/paste.sr.ht # read-write
+        - https://lists.sr.ht/~sircmpwn/sr.ht-discuss # mailing list that doubles as bug tracker(?)
     items:
       type: string
-      example: "https://forgedfed-interface.example.com"
+      example: https://git.sr.ht/~sircmpwn/paste.sr.ht # readonly
