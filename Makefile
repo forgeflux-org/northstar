@@ -1,10 +1,6 @@
 defualt: ## Run app
 	@. ./venv/bin/activate && FLASK_APP=northstar/__init__.py FLASK_ENV=development flask run
 
-activate: ## Slip into virtual environment
-	@-virtualenv venv
-	. ./venv/bin/activate
-
 coverage:
 	@ . ./venv/bin/activate  && coverage run -m pytest
 	@ . ./venv/bin/activate  && coverage html
