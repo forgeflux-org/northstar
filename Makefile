@@ -33,7 +33,7 @@ lint: ## Run linter
 	@./venv/bin/black ./tests/*
 
 migrate: ## Run migrations
-	. ./venv/bin/activate && yoyo develop
+	@. ./venv/bin/activate && FLASK_APP=northstar/__init__.py FLASK_ENV=development flask migrate
 
 test: ## Run tests
 	@cd ./docs/openapi/  && yarn install 
