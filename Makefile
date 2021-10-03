@@ -22,6 +22,10 @@ test: ## Run tests
 	@cd ./docs/openapi/  && yarn install 
 	@cd ./docs/openapi/  && yarn test 
 
+migrate: ## Run migrations
+	. ./venv/bin/activate && yoyo develop
+
+
 doc: ## Generate documentation
 	@-rm -rf dist
 	@-mkdir -p dist/openapi/
