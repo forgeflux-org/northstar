@@ -39,6 +39,9 @@ jobs:
       - name: Run tests
         run: make test
 
+      - name: Prepare test coverage report
+        run: make coverage
+
       - name: Generate documentation
         run: make doc
 
