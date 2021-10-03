@@ -15,9 +15,12 @@ doc: ## Generate documentation
 env: ## Install all dependencies
 	@-virtualenv venv
 	. ./venv/bin/activate && pip install -r requirements.txt
+	. ./venv/bin/activate && pip install -e .
+	. ./venv/bin/activate && pip install '.[test]'
 
 freeze: ## Freeze python dependencies
 	@. ./venv/bin/activate && pip freeze > requirements.txt
+	@-sed -i 's/northstar.*/.\//' requirements.txt
 
 help: ## Prints help for targets with comments
 	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
