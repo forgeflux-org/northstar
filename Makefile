@@ -11,6 +11,7 @@ freeze:
 env: ## Install all dependencies
 	@-virtualenv venv
 	. ./venv/bin/activate && pip install -r requirements.txt
+	@cd ./docs/openapi/ && yarn install
 
 i: ## Launch app.py in an interactive python shell
 	python -i ./src/app.py
