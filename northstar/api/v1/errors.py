@@ -1,3 +1,6 @@
+"""
+Errors
+"""
 # North Star ---  A lookup service for forged fed ecosystem
 # Copyright © 2021 Aravinth Manivannan <realaravinth@batsense.net
 #
@@ -12,45 +15,30 @@
 # GNU Affero General Public License for more details.
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import os
-import tempfile
-
-import pytest
-import requests_mock
-
-from northstar import create_app
-from northstar.db import get_db, init_db
+from flask import jsonify
 
 
-@pytest.fixture
-def app():
-    """App instance with test configuration"""
-    db_fd, db_path = tempfile.mkstemp()
-    # db_path = os.path.join(db_path, "northstar.db")
+class Error:
+    """Helper class for presenting errors in the format specified by the specification"""
 
-    app = create_app(
-        {
-            "TESTING": True,
-            "DATABASE": db_path,
-        }
-    )
+    def __init__(self, errcode: str, error: str, status: int):
+        self.__errcode = errcode
+        self.__error = error
+        self.__status = status
 
-    with app.app_context():
-        init_db()
+    def get_error(self):
+        """Get error in serialziable form"""
+        error = {}
+        error["errcode"] = self.__errcode
+        error["error"] = self.__error
+        return error
 
-    yield app
+    def status(self):
+        """Get error status"""
+        return self.__status
 
-    os.close(db_fd)
-    os.unlink(db_path)
-
-
-@pytest.fixture
-def client(app):
-    """Test client for the app"""
-    return app.test_client()
-
-
-@pytest.fixture
-def runner(app):
-    """Test runner for the app's CLI commands"""
-    return app.test_cli_runner()
+    def get_error_resp(self):
+        """Get error response"""
+        resp = jsonify(self.get_error())
+        resp.status = self.__status
+        return resp

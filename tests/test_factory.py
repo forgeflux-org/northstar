@@ -1,3 +1,4 @@
+"""Test test configuration"""
 # North Star ---  A lookup service for forged fed ecosystem
 # Copyright © 2021 Aravinth Manivannan <realaravinth@batsense.net
 #
@@ -16,10 +17,6 @@ from northstar import create_app
 
 
 def test_config():
+    """Test if factory tests app to testing mode"""
     assert not create_app().testing
     assert create_app({"TESTING": True}).testing
-
-
-def test_hello(client):
-    response = client.get("/api/v1/interface/register")
-    assert response.data == b"Foobar"

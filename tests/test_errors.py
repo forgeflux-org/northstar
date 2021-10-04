@@ -1,3 +1,4 @@
+""" Test errors helper class"""
 # North Star ---  A lookup service for forged fed ecosystem
 # Copyright © 2021 Aravinth Manivannan <realaravinth@batsense.net
 #
@@ -12,45 +13,19 @@
 # GNU Affero General Public License for more details.
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import os
-import tempfile
-
-import pytest
-import requests_mock
-
 from northstar import create_app
-from northstar.db import get_db, init_db
+
+from northstar.api.v1.errors import Error
+from northstar.api.v1.interface import F_D_EMPTY_FORGE_LIST, F_D_INTERFACE_UNREACHABLE
 
 
-@pytest.fixture
-def app():
-    """App instance with test configuration"""
-    db_fd, db_path = tempfile.mkstemp()
-    # db_path = os.path.join(db_path, "northstar.db")
+def test_errors(client):
+    """Test interface registration handler"""
 
-    app = create_app(
-        {
-            "TESTING": True,
-            "DATABASE": db_path,
-        }
-    )
+    def verify_status(e: Error, status: int):
+        assert e.status() == status
+        resp = e.get_error_resp()
+        assert resp.status.find(str(status)) is not -1
 
-    with app.app_context():
-        init_db()
-
-    yield app
-
-    os.close(db_fd)
-    os.unlink(db_path)
-
-
-@pytest.fixture
-def client(app):
-    """Test client for the app"""
-    return app.test_client()
-
-
-@pytest.fixture
-def runner(app):
-    """Test runner for the app's CLI commands"""
-    return app.test_cli_runner()
+    verify_status(F_D_EMPTY_FORGE_LIST, 400)
+    verify_status(F_D_INTERFACE_UNREACHABLE, 503)
