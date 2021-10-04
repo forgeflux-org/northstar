@@ -15,12 +15,4 @@ North Star API
 # GNU Affero General Public License for more details.
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from flask import Flask
-
-app = Flask(__name__)
-
-
-@app.route("/")
-async def home():
-    """Placeholder route"""
-    return "Foobar"
+from .v1 import bp as V1_bp
