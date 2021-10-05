@@ -24,6 +24,12 @@ jobs:
           python-version: "3.9.7"
           architecture: x64
 
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: intall virtualenv
         run: pip install virtualenv
 
@@ -41,6 +47,13 @@ jobs:
 
       - name: Prepare test coverage report
         run: make coverage
+
+      - name: Create docker image
+        run: make docker
+
+      - name: Publish docker image
+        if: github.ref == 'refs/heads/master' || github.event_name == 'push'
+        run: docker push forgedfed/northstar
 
       - name: Generate documentation
         run: make doc
