@@ -43,5 +43,10 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    @app.after_request
+    def flock_google(response):
+        response.headers["Permissions-Policy"] = "interest-cohort=()"
+        return response
+
     app.register_blueprint(V1_bp)
     return app
