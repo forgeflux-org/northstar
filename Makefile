@@ -12,7 +12,7 @@ doc: ## Generate documentation
 	@cd ./docs/openapi/  && yarn install && yarn html
 	@cp -r ./docs/openapi/dist/* dist/openapi/
 
-docker:
+docker: ## Build Docker image from source
 	docker build -t forgedfed/northstar .
 
 env: ## Install all dependencies
