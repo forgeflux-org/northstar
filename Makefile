@@ -1,4 +1,4 @@
-defualt: ## Run app
+default: ## Run app
 	@. ./venv/bin/activate && FLASK_APP=northstar/__init__.py FLASK_ENV=development flask run
 
 coverage:
