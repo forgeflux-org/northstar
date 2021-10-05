@@ -1,6 +1,6 @@
 /api/v1/interface/register:
   post:
-    tags: 
+    tags:
       - interface
     summary: Add an interface to the discovery service
     description: >-
@@ -18,7 +18,7 @@
           schema:
             $ref: "./schema/register-interface.yaml"
     responses:
-      '200':
+      "200":
         description: Successful registration
       '400':
         description: >-
@@ -35,3 +35,44 @@
           application/json:
             schema:
               $ref: "./response/error-interface-unreachable.yaml"
+
+/api/v1/forge/interfaces:
+  post:
+    tags:
+      - interface
+    summary: Get all interfaces registered against a forge
+    description: >-
+      To setup a bridge, an interface that can talk to the target forge
+      must be identified. North Star is a lookup service that makes this
+      possible. This endpoint is used to get all interfaces registered
+      the queried forge
+    operationId: getInterfaces
+    requestBody:
+      description: Forge URL
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "./schema/get-interfaces.yaml"
+
+    responses:
+      "200":
+        description: Query is successful and interfaces were found for the queried forge
+        content:
+          application/json:
+            schema:
+              $ref: "./response/lookup-interfaces.yaml"
+
+      "400":
+        description: There are no interfaces registered against the queried forge
+        content:
+          application/json:
+            schema:
+              $ref: "./response/lookup-no-interface-error.yaml"
+      "500":
+        description: >-
+          Opration failure due to internal errors
+        content:
+          application/json:
+            schema:
+              $ref: "./response/internal-server-error.yaml"

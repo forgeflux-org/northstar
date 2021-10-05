@@ -1,0 +1,10 @@
+type: object
+properties:
+  errcode:
+    description: The F_D_NO_REGISTERED_INTERFACES error code
+    type: string
+    example: F_D_NO_REGISTERED_INTERFACES
+  error:
+    description: A human-readable error message
+    type: string
+    example: No interfaces are registered against the queried forge
