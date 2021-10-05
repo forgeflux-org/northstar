@@ -22,13 +22,13 @@ from yoyo import read_migrations
 from yoyo import get_backend
 
 
-def get_db():
+def get_db() -> sqlite3.Connection:
+    """Get database connection"""
     if "db" not in g:
         g.db = sqlite3.connect(
             current_app.config["DATABASE"], detect_types=sqlite3.PARSE_DECLTYPES
         )
         g.db.row_factory = sqlite3.Row
-
     return g.db
 
 
@@ -41,12 +41,12 @@ def close_db(e=None):
 
 def init_db():
     """Apply database migrations"""
-
     db = str.format("sqlite:///%s" % (current_app.config["DATABASE"]))
     backend = get_backend(db)
-    migrations = read_migrations("../migrations/")
+    migrations = read_migrations("./migrations/")
     with backend.lock():
         backend.apply_migrations(backend.to_apply(migrations))
+        backend.commit()
 
 
 @click.command("migrate")

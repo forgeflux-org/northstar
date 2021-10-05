@@ -21,7 +21,7 @@ import sqlite3
 from flask import Flask
 
 from . import db
-from .api.v1 import bp
+from .api import V1_bp
 
 
 def create_app(test_config=None):
@@ -43,5 +43,5 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    app.register_blueprint(bp)
+    app.register_blueprint(V1_bp)
     return app

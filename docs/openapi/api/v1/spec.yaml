@@ -20,20 +20,21 @@
     responses:
       "200":
         description: Successful registration
-      "400":
+      '400':
+        description: >-
+          Registration failure, the forge list submitted is empty. An interface
+          should handle at least one forge.
+        content:
+          application/json:
+            schema:
+              $ref: "./response/error-interface-unreachable.yaml"
+      '503':
         description: >-
           Registration failure, interface couldn't be reached via the URL provided
         content:
           application/json:
             schema:
-              $ref: "./response/register-error.yaml"
-      "500":
-        description: >-
-          Registration failure due to internal errors
-        content:
-          application/json:
-            schema:
-              $ref: "./response/internal-server-error.yaml"
+              $ref: "./response/error-interface-unreachable.yaml"
 
 /api/v1/forge/interfaces:
   post:

@@ -20,6 +20,7 @@ steps = [
     step("""
     CREATE TABLE IF NOT EXISTS northstar_interface_forge_directory (
         forge_id INTEGER NOT NULL REFERENCES northstar_forges(ID) ON DELETE CASCADE,
-        interface_id INTEGER NOT NULL REFERENCES northstar_forges(ID) ON DELETE CASCADE
+        interface_id INTEGER NOT NULL REFERENCES northstar_forges(ID) ON DELETE CASCADE,
+        UNIQUE(forge_id, interface_id)
     )""")
 ]
