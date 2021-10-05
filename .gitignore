@@ -142,3 +142,5 @@ databse.db
 
 node_modules/
 dist/
+northstar.db
+instance
