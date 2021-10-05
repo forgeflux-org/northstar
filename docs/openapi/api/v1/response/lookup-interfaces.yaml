@@ -1,0 +1,12 @@
+type: object
+properties:
+  interfaces:
+    description: A list of interfaces registered against queried forge
+    type: array
+    example:
+      - https://interface1.example.com
+      - https://interface2.example.com
+      - https://interface3.example.com
+    items:
+      type: string
+      example: https://interface3.example.com
