@@ -24,7 +24,7 @@ jobs:
           python-version: "3.9.7"
           architecture: x64
 
-      - name: intall virtualenv
+      - name: install virtualenv
         run: pip install virtualenv
 
       - name: Install python dependencies
@@ -52,3 +52,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
           FOLDER: dist/
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
