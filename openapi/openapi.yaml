@@ -38,6 +38,7 @@ paths:
                 interface_url:
                   description: The publicly accessible URL of the bridge interface
                   type: string
+                  example: 'https://forgedfed-interface.example.com'
                 forge_url:
                   description: 'The publicly accessible URL of the forge that this interface manages. If a forge is known by more than one URL(separate bug tracker, and different fetch and push URLs for git), then mention them all in this field'
                   type: array
@@ -47,7 +48,7 @@ paths:
                     - 'https://lists.sr.ht/~sircmpwn/sr.ht-discuss'
                   items:
                     type: string
-                    example: 'https://forgedfed-interface.example.com'
+                    example: 'https://git.sr.ht/~sircmpwn/paste.sr.ht'
       responses:
         '200':
           description: Successful registration
@@ -66,3 +67,76 @@ paths:
                     description: A human-readable error message
                     type: string
                     example: The interface was unreachable with the publicly accessible URL provided
+        '500':
+          description: Registration failure due to internal errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1forge~1interfaces/post/responses/500/content/application~1json/schema'
+  /api/v1/forge/interfaces:
+    post:
+      tags:
+        - interface
+      summary: Get all interfaces registered against a forge
+      description: 'To setup a bridge, an interface that can talk to the target forge must be identified. North Star is a lookup service that makes this possible. This endpoint is used to get all interfaces registered the queried forge'
+      operationId: getInterfaces
+      requestBody:
+        description: Forge URL
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                forge_url:
+                  description: The publicly accessible URL of the bridge interface
+                  type: string
+                  example: 'https://github.com'
+      responses:
+        '200':
+          description: Query is successful and interfaces were found for the queried forge
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  interfaces:
+                    description: A list of interfaces registered against queried forge
+                    type: array
+                    example:
+                      - 'https://interface1.example.com'
+                      - 'https://interface2.example.com'
+                      - 'https://interface3.example.com'
+                    items:
+                      type: string
+                      example: 'https://interface3.example.com'
+        '400':
+          description: There are no interfaces registered against the queried forge
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errcode:
+                    description: The F_D_NO_REGISTERED_INTERFACES error code
+                    type: string
+                    example: F_D_NO_REGISTERED_INTERFACES
+                  error:
+                    description: A human-readable error message
+                    type: string
+                    example: No interfaces are registered against the queried forge
+        '500':
+          description: Opration failure due to internal errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errcode:
+                    description: The F_D_INTERNAL_SERVER_ERROR error code
+                    type: string
+                    example: F_D_INTERNAL_SERVER_ERROR
+                  error:
+                    description: A human-readable error message
+                    type: string
+                    example: 'Operation couldn''t be performed due to internal errors. If error persists, please contact admins.'
