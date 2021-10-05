@@ -10,12 +10,12 @@ WORKDIR /home/northstar/app
 
 RUN pip3 install virtualenv
 RUN python3 -m virtualenv venv
-COPY . .
-#COPY requirements.txt .
-#COPY setup.py .
-#RUN sed -i '/.\//d' requirements.txt
+COPY requirements.txt .
+RUN sed -i '/.\//d' requirements.txt
 # See https://github.com/pypa/pip/issues/9819
 RUN ./venv/bin/pip install --use-feature=in-tree-build -r requirements.txt
+COPY . .
+#COPY setup.py .
 ENV FLASK_APP=northstar/__init__.py
 RUN ./venv/bin/flask migrate
 CMD [ "./venv/bin/flask", "run", "--host=0.0.0.0", "--port", "3000"]
