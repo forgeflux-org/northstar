@@ -53,7 +53,7 @@ paths:
         '200':
           description: Successful registration
         '400':
-          description: 'Registration failure, interface couldn''t be reached via the URL provided'
+          description: 'Registration failure, the forge list submitted is empty. An interface should handle at least one forge.'
           content:
             application/json:
               schema:
@@ -67,12 +67,12 @@ paths:
                     description: A human-readable error message
                     type: string
                     example: The interface was unreachable with the publicly accessible URL provided
-        '500':
-          description: Registration failure due to internal errors
+        '503':
+          description: 'Registration failure, interface couldn''t be reached via the URL provided'
           content:
             application/json:
               schema:
-                $ref: '#/paths/~1api~1v1~1forge~1interfaces/post/responses/500/content/application~1json/schema'
+                $ref: '#/paths/~1api~1v1~1interface~1register/post/responses/400/content/application~1json/schema'
   /api/v1/forge/interfaces:
     post:
       tags:
