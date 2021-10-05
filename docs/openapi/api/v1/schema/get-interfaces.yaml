@@ -1,0 +1,6 @@
+type: object
+properties:
+  forge_url:
+    description: The publicly accessible URL of the bridge interface
+    type: string
+    example: "https://github.com"
