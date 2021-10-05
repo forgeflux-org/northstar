@@ -30,7 +30,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: intall virtualenv
+      - name: install virtualenv
         run: pip install virtualenv
 
       - name: Install python dependencies
@@ -65,3 +65,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
           FOLDER: dist/
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
