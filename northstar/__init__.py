@@ -50,3 +50,6 @@ def create_app(test_config=None):
 
     app.register_blueprint(V1_bp)
     return app
+
+
+app = create_app()

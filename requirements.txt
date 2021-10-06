@@ -1,14 +1,19 @@
 asgiref==3.4.1
 astroid==2.8.0
 attrs==21.2.0
+Automat==20.2.0
 black==21.9b0
 certifi==2021.5.30
 charset-normalizer==2.0.6
 click==8.0.1
+constantly==15.1.0
 coverage==6.0
 Flask==2.0.1
 greenlet==1.1.2
+gunicorn==20.1.0
+hyperlink==21.0.0
 idna==3.2
+incremental==21.3.0
 iniconfig==1.1.1
 isort==5.9.3
 itsdangerous==2.0.1
@@ -44,3 +49,4 @@ urllib3==1.26.7
 Werkzeug==2.0.1
 wrapt==1.12.1
 yoyo-migrations==7.3.2
+zope.interface==5.4.0
