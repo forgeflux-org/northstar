@@ -2,7 +2,7 @@
 North Star Application
 """
 # North Star ---  A lookup service for forged fed ecosystem
-# Copyright © 2021 Aravinth Manivannan <realaravinth@batsense.net
+# Copyright © 2021 Aravinth Manivannan <realaravinth@batsense.net>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -42,6 +42,11 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    @app.after_request
+    def flock_google(response):
+        response.headers["Permissions-Policy"] = "interest-cohort=()"
+        return response
 
     app.register_blueprint(V1_bp)
     return app
