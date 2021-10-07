@@ -23,15 +23,18 @@ from .errors import Error
 
 bp = Blueprint("API_V1_INTERFACE", __name__, url_prefix="/interface")
 
-
 F_D_EMPTY_FORGE_LIST = Error(
-    errcode="F_D_EMPTY_FORGE_LIST", error="The forge list submitted is empty", status=400
+    errcode="F_D_EMPTY_FORGE_LIST",
+    error="The forge list submitted is empty",
+    status=400,
 )
+
 F_D_INTERFACE_UNREACHABLE = Error(
     errcode="F_D_INTERFACE_UNREACHABLE",
     error="The interface was unreachable with the publicly accessible URL provided",
     status=503,
 )
+
 
 @bp.route("/register", methods=["POST"])
 def register():
