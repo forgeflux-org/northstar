@@ -14,21 +14,21 @@ Interface related routes
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
 # You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from urllib.parse import urlparse, urlunparse
-
-import requests
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 from flask import Blueprint, jsonify, request
+from .utils import clean_url, not_url, verify_interface_online
 
 from northstar.db import get_db
 from .errors import Error
 
 bp = Blueprint("API_V1_INTERFACE", __name__, url_prefix="/interface")
 
-
 F_D_EMPTY_FORGE_LIST = Error(
-    errcode="F_D_EMPTY_FORGE_LIST", error="The forge list submited is empty", status=400
+    errcode="F_D_EMPTY_FORGE_LIST",
+    error="The forge list submitted is empty",
+    status=400,
 )
+
 F_D_INTERFACE_UNREACHABLE = Error(
     errcode="F_D_INTERFACE_UNREACHABLE",
     error="The interface was unreachable with the publicly accessible URL provided",
@@ -36,38 +36,9 @@ F_D_INTERFACE_UNREACHABLE = Error(
 )
 
 
-def clean_url(url: str):
-    """Remove paths and tracking elements from URL"""
-    parsed = urlparse(url)
-    cleaned = urlunparse((parsed.scheme, parsed.netloc, "", "", "", ""))
-    return cleaned
-
-
-def not_url(url: str):
-    """Check if the URL pased is indeed a URL"""
-    parsed = urlparse(url)
-    return (
-        len(parsed.scheme) == 0
-        or len(parsed.netloc) == 0
-        or parsed.netloc == "localhost"
-    )
-
-
-def verify_interface_online(url: str):
-    """Verify if interface instance is reachable"""
-    parsed = urlparse(url)
-    path = "/_ff/interface/versions"
-    url = urlunparse((parsed.scheme, parsed.netloc, path, "", "", ""))
-    resp = requests.get(url)
-    if resp.status_code == 200:
-        data = resp.json()
-        return "versions" in data and len(data["versions"]) is not 0
-    return False
-
-
 @bp.route("/register", methods=["POST"])
 def register():
-    """Regiter interface"""
+    """Register interface"""
 
     data = request.get_json()
     if "forge_url" in data and "interface_url" in data:

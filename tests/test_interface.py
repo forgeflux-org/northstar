@@ -81,7 +81,7 @@ def test_interface_register(client, requests_mock):
             assert res is 1
 
 
-def test_interface_register_erros(client, requests_mock):
+def test_interface_register_errors(client, requests_mock):
     """Test interface errors"""
     interface_url = "https://interface.example.com/_ff/interface/versions"
     resp = {"versions": ["v0.1.0"]}
