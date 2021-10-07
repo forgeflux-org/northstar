@@ -16,7 +16,6 @@ Interface related routes
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 from flask import Blueprint, jsonify, request
-from .utils import clean_url, not_url, verify_interface_online
 
 from northstar.db import get_db
 from .errors import Error
@@ -35,6 +34,34 @@ F_D_INTERFACE_UNREACHABLE = Error(
     status=503,
 )
 
+
+def clean_url(url: str):
+    """Remove paths and tracking elements from URL"""
+    parsed = urlparse(url)
+    cleaned = urlunparse((parsed.scheme, parsed.netloc, "", "", "", ""))
+    return cleaned
+
+
+def not_url(url: str):
+    """Check if the URL pased is indeed a URL"""
+    parsed = urlparse(url)
+    return (
+        len(parsed.scheme) == 0
+        or len(parsed.netloc) == 0
+        or parsed.netloc == "localhost"
+    )
+
+
+def verify_interface_online(url: str):
+    """Verify if interface instance is reachable"""
+    parsed = urlparse(url)
+    path = "/_ff/interface/versions"
+    url = urlunparse((parsed.scheme, parsed.netloc, path, "", "", ""))
+    resp = requests.get(url)
+    if resp.status_code == 200:
+        data = resp.json()
+        return "versions" in data and len(data["versions"]) != 0
+    return False
 
 @bp.route("/register", methods=["POST"])
 def register():
