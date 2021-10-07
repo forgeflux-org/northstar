@@ -17,6 +17,8 @@ Version 1 API
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from flask import Blueprint
 from .interface import bp as interface_bp
+from .lookup import bp as lookup_bp
 
 bp = Blueprint("API_V1", __name__, url_prefix="/api/v1")
 bp.register_blueprint(interface_bp)
+bp.register_blueprint(lookup_bp)
