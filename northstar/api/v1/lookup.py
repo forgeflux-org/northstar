@@ -15,15 +15,13 @@ Lookup related routes
 # GNU Affero General Public License for more details.
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
-from urllib.parse import urlparse, urlunparse
-
-import requests
 from flask import Blueprint, jsonify, request
+from .utils import clean_url, not_url, verify_interface_online
 
 from northstar.db import get_db
 from .errors import Error
 
-bp = Blueprint("API_V1_INTERFACE", __name__, url_prefix="/forge")
+bp = Blueprint("API_V1_INTERFACE_LOOKUP", __name__, url_prefix="/forge")
 
 F_D_NO_REGISTERED_INTERFACES = Error(
     errcode="F_D_NO_REGISTERED_INTERFACES",
@@ -36,35 +34,6 @@ F_D_INTERNAL_SERVER_ERROR = Error(
     error="Operation could not be performed due to internal errors.",
     status=500,
 )
-
-
-def clean_url(url: str):
-    """Remove paths and tracking elements from URL"""
-    parsed = urlparse(url)
-    cleaned = urlunparse((parsed.scheme, parsed.netloc, "", "", "", ""))
-    return cleaned
-
-
-def not_url(url: str):
-    """Check if the URL pased is indeed a URL"""
-    parsed = urlparse(url)
-    return (
-        len(parsed.scheme) == 0
-        or len(parsed.netloc) == 0
-        or parsed.netloc == "localhost"
-    )
-
-
-def verify_interface_online(url: str):
-    """Verify if interface instance is reachable"""
-    parsed = urlparse(url)
-    path = "/_ff/interface/versions"
-    url = urlunparse((parsed.scheme, parsed.netloc, path, "", "", ""))
-    resp = requests.get(url)
-    if resp.status_code == 200:
-        data = resp.json()
-        return "versions" in data and len(data["versions"]) != 0
-    return False
 
 
 @bp.route("/interfaces", methods=["POST"])
@@ -89,7 +58,7 @@ def lookup():
 
         # Retrieve the interface and forge from the database
         interface_results = cur.execute(
-            "SELECT interface_url, forge_url FROM northstar_lookup WHERE forge_url = (?)",
+            "SELECT interface_url FROM northstar_lookup WHERE forge_url = (?)",
             (clean_url(forge_url),),
         ).fetchall()
         conn.commit()
@@ -99,7 +68,7 @@ def lookup():
             return F_D_NO_REGISTERED_INTERFACES.get_error_resp()
 
         # Return retrieved interfaces and forges
-        return jsonify({"results": [{res[0]: res[1]} for res in interface_results]})
+        return jsonify({"results": [{res[0]: forge_url} for res in interface_results]})
 
     # If all else fails, throw an error.
     return F_D_INTERNAL_SERVER_ERROR
