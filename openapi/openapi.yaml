@@ -60,6 +60,21 @@ paths:
                 type: object
                 properties:
                   errcode:
+                    description: THE F_D_EMPTY_FORGE_LIST error code
+                    type: string
+                    example: F_D_EMPTY_FORGE_LIST
+                  error:
+                    description: A human-readable error message
+                    type: string
+                    example: The forge list submited is empty. An interface should handle at  least one forge.
+        '503':
+          description: 'Registration failure, interface couldn''t be reached via the URL provided'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errcode:
                     description: The F_D_INTERFACE_UNREACHABLE error code
                     type: string
                     example: F_D_INTERFACE_UNREACHABLE
@@ -67,12 +82,6 @@ paths:
                     description: A human-readable error message
                     type: string
                     example: The interface was unreachable with the publicly accessible URL provided
-        '503':
-          description: 'Registration failure, interface couldn''t be reached via the URL provided'
-          content:
-            application/json:
-              schema:
-                $ref: '#/paths/~1api~1v1~1interface~1register/post/responses/400/content/application~1json/schema'
   /api/v1/forge/interfaces:
     post:
       tags:
