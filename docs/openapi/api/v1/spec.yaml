@@ -27,7 +27,7 @@
         content:
           application/json:
             schema:
-              $ref: "./response/error-interface-unreachable.yaml"
+              $ref: "./response/error-forge-list-empty.yaml"
       '503':
         description: >-
           Registration failure, interface couldn't be reached via the URL provided

@@ -9,5 +9,5 @@ properties:
     type: string
     example: >-
       The forge list submited is empty. An interface should handle at 
-      least one forge
+      least one forge.
 
