@@ -16,24 +16,13 @@ Lookup related routes
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 from flask import Blueprint, jsonify, request
-from .utils import clean_url, not_url, verify_interface_online
+from .utils import clean_url, not_url
 
 from northstar.db import get_db
-from .errors import Error
+from .errors import F_D_NOT_URL, F_D_NO_REGISTERED_INTERFACES, F_D_INVALID_PAYLOAD
+
 
 bp = Blueprint("API_V1_INTERFACE_LOOKUP", __name__, url_prefix="/forge")
-
-F_D_NO_REGISTERED_INTERFACES = Error(
-    errcode="F_D_NO_REGISTERED_INTERFACES",
-    error="No interfaces are registered against the queried forge",
-    status=400,
-)
-
-F_D_INTERNAL_SERVER_ERROR = Error(
-    errcode="F_D_INTERNAL_SERVER_ERROR",
-    error="Operation could not be performed due to internal errors.",
-    status=500,
-)
 
 
 @bp.route("/interfaces", methods=["POST"])
@@ -50,7 +39,7 @@ def lookup():
 
         # Check if the given forge_url is valid
         if len(forge_url) == 0 or not_url(forge_url):
-            return F_D_NO_REGISTERED_INTERFACES.get_error_resp()
+            return F_D_NOT_URL.get_error_resp()
 
         # Connect to the database
         conn = get_db()
@@ -67,8 +56,10 @@ def lookup():
         if len(interface_results) == 0:
             return F_D_NO_REGISTERED_INTERFACES.get_error_resp()
 
-        # Return retrieved interfaces and forges
-        return jsonify({"results": [{res[0]: forge_url} for res in interface_results]})
+        res = list()
+        for r in interface_results:
+            res.append(r[0])
+        return jsonify(res)
 
     # If all else fails, throw an error.
-    return F_D_INTERNAL_SERVER_ERROR
+    return F_D_INVALID_PAYLOAD.get_error_resp()

@@ -15,12 +15,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from urllib.parse import urlparse, urlunparse
 
-from northstar import create_app
-from northstar.api.v1.interface import F_D_EMPTY_FORGE_LIST
-from northstar.api.v1.interface import F_D_INTERFACE_UNREACHABLE
+from northstar.app import create_app
+from northstar.api.v1.errors import (
+    F_D_EMPTY_FORGE_LIST,
+    F_D_INVALID_PAYLOAD,
+    F_D_INTERFACE_UNREACHABLE,
+    F_D_NOT_URL,
+)
 from northstar.api.v1.interface import clean_url, not_url
 from northstar.api.v1.interface import verify_interface_online
 from northstar.db import get_db
+
+from test_utils import expect_error
 
 
 def test_interface_register(client, requests_mock):
@@ -66,10 +72,8 @@ def test_interface_register(client, requests_mock):
             if i == 0:
                 forge_ids[forge] = forge_id
             else:
-                print(forge_ids)
                 assert forge_ids[forge] == forge_id
 
-            print(interface_id, forge_id)
             res = cur.execute(
                 """
             SELECT EXISTS (
@@ -95,27 +99,24 @@ def test_interface_register_errors(client, requests_mock):
     not_url_payload = interface_exists
     not_url_payload["interface_url"] = "foo"
     response = client.post("/api/v1/interface/register", json=not_url_payload)
-    assert response.status == "400 BAD REQUEST"
+    assert expect_error(response, F_D_NOT_URL)
 
     not_url_payload["interface_url"] = interface_url
     not_forge_urls = forges
     not_forge_urls.append("foo")
     not_url_payload["forge_url"] = not_forge_urls
     response = client.post("/api/v1/interface/register", json=not_url_payload)
-    assert response.status == "400 BAD REQUEST"
+    assert expect_error(response, F_D_NOT_URL)
 
     ## empty request
     response = client.post("/api/v1/interface/register", json={})
-    assert response.status == "400 BAD REQUEST"
+    assert expect_error(response, F_D_INVALID_PAYLOAD)
 
     # Empty forge list error
     empty_forge_list = interface_exists
     empty_forge_list["forge_url"] = []
     response = client.post("/api/v1/interface/register", json=empty_forge_list)
-    assert response.status == "400 BAD REQUEST"
-    data = response.json
-    assert F_D_EMPTY_FORGE_LIST.get_error()["error"] == data["error"]
-    assert F_D_EMPTY_FORGE_LIST.get_error()["errcode"] == data["errcode"]
+    assert expect_error(response, F_D_EMPTY_FORGE_LIST)
 
 
 def test_clean_url(client):
@@ -161,8 +162,7 @@ def test_verify_instance_online_unreachable(client):
     interface_exists = {"interface_url": interface_url, "forge_url": forges}
 
     response = client.post("/api/v1/interface/register", json=interface_exists)
-    assert response.status.find(str(503)) is not -1
-    assert response.json == F_D_INTERFACE_UNREACHABLE.get_error()
+    expect_error(response, F_D_INTERFACE_UNREACHABLE)
 
 
 def test_not_url(client):

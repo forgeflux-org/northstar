@@ -1,0 +1,12 @@
+type: object
+properties:
+  errcode:
+    description: Unique identifier for errors
+    type: string
+    example: F_D_EMPTY_FORGE_LIST
+  error:
+    description: A human-readable error message
+    type: string
+    example: >-
+      The forge list submited is empty. An interface should handle at 
+      least one forge.

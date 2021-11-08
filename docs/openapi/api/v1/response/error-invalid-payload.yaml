@@ -1,0 +1,10 @@
+type: object
+properties:
+  errcode:
+    description: THE F_D_INVALID_PAYLOAD error code
+    type: string
+    example: F_D_INVALID_PAYLOAD
+  error:
+    description: A human-readable error message
+    type: string
+    example: Please submit valid payload
