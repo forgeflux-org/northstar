@@ -44,3 +44,4 @@ test: ## Run tests
 	@pip install -e .
 	@pip install '.[test]'
 	@./venv/bin/pytest
+	@pip uninstall -y northstar
