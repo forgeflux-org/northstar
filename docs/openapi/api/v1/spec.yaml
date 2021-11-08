@@ -22,12 +22,14 @@
         description: Successful registration
       '400':
         description: >-
-          Registration failure, the forge list submitted is empty. An interface
-          should handle at least one forge.
+          The request is invalid. A meaningful errcode and description error
+          text will be returned. Example reasons for rejection include:
+            - Request body is malformed(`errcode`:`F_D_INVALID_PAYLOAD`)
+            - Forge list is empty(`errcode`:`F_D_EMPTY_FORGE_LIST`)
         content:
           application/json:
             schema:
-              $ref: "./response/error-forge-list-empty.yaml"
+              $ref: "./response/base-error.yaml"
       '503':
         description: >-
           Registration failure, interface couldn't be reached via the URL provided
