@@ -53,14 +53,17 @@ paths:
         '200':
           description: Successful registration
         '400':
-          description: 'Registration failure, the forge list submitted is empty. An interface should handle at least one forge.'
+          description: |-
+            The request is invalid. A meaningful errcode and description error text will be returned. Example reasons for rejection include:
+              - Request body is malformed(`errcode`:`F_D_INVALID_PAYLOAD`)
+              - Forge list is empty(`errcode`:`F_D_EMPTY_FORGE_LIST`)
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   errcode:
-                    description: THE F_D_EMPTY_FORGE_LIST error code
+                    description: Unique identifier for errors
                     type: string
                     example: F_D_EMPTY_FORGE_LIST
                   error:
