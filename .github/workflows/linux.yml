@@ -18,6 +18,14 @@ jobs:
           submodules: true
           fetch-depth: 0
 
+      - uses: actions/checkout@v2
+      - name: ⚡ Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            /var/lib/docker
+          key: ${{ runner.os }}-northstar
+
       - name: Setup python
         uses: actions/setup-python@v2
         with:
