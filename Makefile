@@ -1,5 +1,5 @@
 default: ## Run app
-	@. ./venv/bin/activate && FLASK_APP=northstar/__init__.py FLASK_ENV=development flask run
+	@. ./venv/bin/activate && python -m northstar
 
 coverage:
 	@ . ./venv/bin/activate  && coverage run -m pytest
@@ -36,7 +36,7 @@ lint: ## Run linter
 	@./venv/bin/black ./tests/*
 
 migrate: ## Run migrations
-	@. ./venv/bin/activate && FLASK_APP=northstar/__init__.py FLASK_ENV=development flask migrate
+	@. ./venv/bin/activate && FLASK_APP=northstar/app.py FLASK_ENV=development flask migrate
 
 test: ## Run tests
 	@cd ./docs/openapi/  && yarn install 

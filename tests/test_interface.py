@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from urllib.parse import urlparse, urlunparse
 
-from northstar import create_app
+from northstar.app import create_app
 from northstar.api.v1.interface import F_D_EMPTY_FORGE_LIST
 from northstar.api.v1.interface import F_D_INTERFACE_UNREACHABLE
 from northstar.api.v1.interface import clean_url, not_url

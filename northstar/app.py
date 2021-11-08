@@ -1,3 +1,6 @@
+"""
+North Star Application
+"""
 # North Star ---  A lookup service for forged fed ecosystem
 # Copyright © 2021 Aravinth Manivannan <realaravinth@batsense.net>
 #
@@ -13,44 +16,37 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os
-import tempfile
+import sqlite3
 
-import pytest
-import requests_mock
+from flask import Flask
 
-from northstar.app import create_app
-from northstar.db import get_db, init_db
+from . import db
+from .api import V1_bp
 
 
-@pytest.fixture
-def app():
-    """App instance with test configuration"""
-    db_fd, db_path = tempfile.mkstemp()
-    # db_path = os.path.join(db_path, "northstar.db")
-
-    app = create_app(
-        {
-            "TESTING": True,
-            "DATABASE": db_path,
-        }
+def create_app(test_config=None):
+    # create and configure the app
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_mapping(
+        DATABASE=os.path.join(app.instance_path, "northstar.db"),
     )
 
-    with app.app_context():
-        init_db()
+    db.init_app(app)
 
-    yield app
+    if test_config is None:
+        app.config.from_pyfile("config.py", silent=True)
+    else:
+        app.config.from_mapping(test_config)
 
-    os.close(db_fd)
-    os.unlink(db_path)
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
 
+    @app.after_request
+    def flock_google(response):
+        response.headers["Permissions-Policy"] = "interest-cohort=()"
+        return response
 
-@pytest.fixture
-def client(app):
-    """Test client for the app"""
-    return app.test_client()
-
-
-@pytest.fixture
-def runner(app):
-    """Test runner for the app's CLI commands"""
-    return app.test_cli_runner()
+    app.register_blueprint(V1_bp)
+    return app
