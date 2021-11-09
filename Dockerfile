@@ -3,7 +3,7 @@ FROM python:3.9-slim-buster
 LABEL org.opencontainers.image.source https://github.com/dat-adi/northstar
 
 RUN useradd -ms /bin/bash -u 1001 northstar
-RUN apt-get update && apt-get install -y ca-certificates make
+RUN apt-get update && apt-get install -y ca-certificates make git
 USER northstar
 
 RUN mkdir /home/northstar/app
