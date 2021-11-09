@@ -22,6 +22,7 @@ from flask import Flask
 
 from . import db
 from .api import V1_bp
+from .pages import bp as pages
 
 
 def create_app(test_config=None):
@@ -49,4 +50,5 @@ def create_app(test_config=None):
         return response
 
     app.register_blueprint(V1_bp)
+    app.register_blueprint(pages)
     return app

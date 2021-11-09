@@ -41,7 +41,7 @@ migrate: ## Run migrations
 test: ## Run tests
 	@cd ./docs/openapi/  && yarn install 
 	@cd ./docs/openapi/  && yarn test 
-	@pip install -e .
-	@pip install '.[test]'
+	@. ./venv/bin/activate && pip install -e .
+	@. ./venv/bin/activate && pip install '.[test]'
 	@./venv/bin/pytest
 	@pip uninstall -y northstar

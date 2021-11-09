@@ -1,2 +1,5 @@
-include migrations/
+graft migrations/
+graft northstar/static/
+graft northstar/templates/
+graft tests
 global-exclude *.pyc:q
