@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dat-adi/northstar.git"
+    "url": "git+https://github.com/forgedfedv2/northstar.git"
   },
   "license": "AGPL3",
   "bugs": {
-    "url": "https://github.com/dat-adi/northstar/issues"
+    "url": "https://github.com/forgedfedv2/northstar/issues"
   },
-  "homepage": "https://github.com/dat-adi/northstar#readme",
+  "homepage": "https://github.com/forgedfedv2/northstar#readme",
   "dependencies": {
     "@apidevtools/swagger-cli": "^4.0.4",
     "@stoplight/spectral": "^5.8.1",
