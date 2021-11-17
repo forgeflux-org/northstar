@@ -1,16 +1,16 @@
 openapi: "3.0.0"
 info:
   version: 0.1.0
-  title: ForgedFed Discovery Service
+  title: ForgeFed Discovery Service
   description: >-
     This service is used to discover bridge interfaces that operate on forges.
     More information about this can be found on
-    [GitHub](https://github.com/dat-adi/northstar)
+    [GitHub](https://github.com/forgefedv2/northstar)
   license:
     name: AGPL3
     url: https://www.gnu.org/licenses/agpl-3.0-standalone.html
   contact:
-    name: ForgedFed Developers
+    name: ForgeFed Developers
     email: forgedfed@gmail.com
 servers:
   - url: http://example.com # TODO CHANGE THIS
@@ -21,6 +21,6 @@ tags:
       changes to the forge that it manages.
     externalDocs: 
       description: Find out more about interfaces 
-      url: https://github.com/dat-adi/forgedfed-spec/blob/master/rfc/1-ecosystem-architecture/1-ecosystem-architecture.md
+      url: https://github.com/forgefedv2/forgefed-spec/blob/master/rfc/1-ecosystem-architecture/1-ecosystem-architecture.md
 paths:
   $ref: "./api/v1/spec.yaml"
