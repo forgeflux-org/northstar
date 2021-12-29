@@ -17,12 +17,12 @@ Search page
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import subprocess
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, send_from_directory
 
 VERSION = "0.1.0"
-instance_maintainer = "foo@example.com"
+INSTANCE_MAINTAINER = "foo@example.com"
 GIT_HASH = subprocess.run(
-    ["git", "rev-parse", "HEAD"], capture_output=True
+    ["git", "rev-parse", "HEAD"], capture_output=True, check=True
 ).stdout.decode("utf-8")
 GITHUB_LINK = f"https://github.com/forgefedv2/northstar/tree/{GIT_HASH}"
 
@@ -35,7 +35,13 @@ def get_search_page():
     return render_template(
         "index.html",
         version=VERSION,
-        admin_email=instance_maintainer,
+        admin_email=INSTANCE_MAINTAINER,
         git_hash=GIT_HASH[0:10],
         github_link=GITHUB_LINK,
     )
+
+
+@bp.route("/docs/openapi/", methods=["GET"])
+def get_openapi_docs():
+    """OpenAPI Docs page"""
+    return send_from_directory("static/docs/openapi", "index.html")

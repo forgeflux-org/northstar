@@ -1,4 +1,5 @@
-default: ## Run app
+OPENAPI_DIST := northstar/static/docs/openapi
+default: doc ## Run app
 	@. ./venv/bin/activate && python -m northstar
 
 coverage:
@@ -7,10 +8,10 @@ coverage:
 	@ . ./venv/bin/activate  && coverage xml
 
 doc: ## Generate documentation
-	@-rm -rf dist
-	@-mkdir -p dist/openapi/
+	@-rm -rf $(OPENAPI_DIST)
+	@-mkdir -p $(OPENAPI_DIST)
 	@cd ./docs/openapi/  && yarn install && yarn html
-	@cp -r ./docs/openapi/dist/* dist/openapi/
+	@cp -r ./docs/openapi/dist/* $(OPENAPI_DIST)
 
 docker: ## Build Docker image from source
 	docker build -t forgedfed/northstar .
