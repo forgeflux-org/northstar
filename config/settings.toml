@@ -1,0 +1,8 @@
+[default]
+instance_maintainer = "testing@example.com"
+source_code = "https://github.com/forgefedv2/northstar"
+
+[testing] 
+# please don't change these values, tests rely on them bein unmodified:
+instance_mainainer = "testing@example.com"
+source_code = "https://github.com/forgefedv2/northstar"
