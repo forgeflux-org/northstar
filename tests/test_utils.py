@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from northstar.api.v1.errors import Error
+from northstar.api.v1.utils import trim_url
 
 
 def expect_error(response, err: Error) -> bool:
@@ -26,3 +27,15 @@ def expect_error(response, err: Error) -> bool:
             err.get_error()["errcode"] == data["errcode"],
         ]
     )
+
+
+def test_trim_url():
+    """Test trim_url"""
+
+    url = "https://example.com"
+    assert trim_url(url) == url
+    assert trim_url(f"{url}/") == url
+
+    path = "/foo/bar"
+    assert trim_url(path) == path
+    assert trim_url(f"{path}/") == path
