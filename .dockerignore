@@ -144,3 +144,4 @@ node_modules/
 dist/
 northstar.db
 instance
+northstar/static/docs/openapi
