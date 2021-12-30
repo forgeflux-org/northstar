@@ -13,10 +13,13 @@
 # GNU Affero General Public License for more details.
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from northstar.app import create_app
-
-
 def test_get_search(client):
     """Test interface registration handler"""
     response = client.get("/")
+    assert response.status == "200 OK"
+
+
+def test_get_openapi_docs(client):
+    """Test interface registration handler"""
+    response = client.get("/docs/openapi/")
     assert response.status == "200 OK"

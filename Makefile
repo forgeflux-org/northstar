@@ -39,10 +39,10 @@ lint: ## Run linter
 migrate: ## Run migrations
 	@. ./venv/bin/activate && FLASK_APP=northstar/app.py FLASK_ENV=development flask migrate
 
-test: ## Run tests
+test: doc ## Run tests
 	@cd ./docs/openapi/  && yarn install 
 	@cd ./docs/openapi/  && yarn test 
 	@. ./venv/bin/activate && pip install -e .
 	@. ./venv/bin/activate && pip install '.[test]'
-	@./venv/bin/pytest
+	@ ENV_FOR_DYNACONF=testing ./venv/bin/pytest
 	@pip uninstall -y northstar

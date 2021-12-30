@@ -17,6 +17,7 @@ import tempfile
 
 import pytest
 import requests_mock
+from dynaconf import settings
 
 from northstar.app import create_app
 from northstar.db import get_db, init_db
@@ -54,3 +55,8 @@ def client(app):
 def runner(app):
     """Test runner for the app's CLI commands"""
     return app.test_cli_runner()
+
+
+@pytest.fixture(autouse=True)
+def set_test_settings():
+    settings.configure(FORCE_ENV_FOR_DYNACONF="testing")

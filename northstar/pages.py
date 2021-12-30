@@ -18,13 +18,17 @@ Search page
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import subprocess
 from flask import Blueprint, render_template, send_from_directory
+from dynaconf import settings
+
+from northstar.api.v1.utils import trim_url, clean_url
 
 VERSION = "0.1.0"
-INSTANCE_MAINTAINER = "foo@example.com"
 GIT_HASH = subprocess.run(
     ["git", "rev-parse", "HEAD"], capture_output=True, check=True
 ).stdout.decode("utf-8")
-GITHUB_LINK = f"https://github.com/forgefedv2/northstar/tree/{GIT_HASH}"
+
+
+GITHUB_LINK = f"{trim_url(settings.SOURCE_CODE)}/{GIT_HASH}"
 
 bp = Blueprint("STATIC_PAGES", __name__, url_prefix="/")
 
@@ -35,7 +39,7 @@ def get_search_page():
     return render_template(
         "index.html",
         version=VERSION,
-        admin_email=INSTANCE_MAINTAINER,
+        admin_email=settings.INSTANCE_MAINTAINER,
         git_hash=GIT_HASH[0:10],
         github_link=GITHUB_LINK,
     )

@@ -37,6 +37,13 @@ def not_url(url: str):
     )
 
 
+def trim_url(url: str) -> str:
+    """Trim trailing slash of a URL"""
+    if url.endswith("/"):
+        url = url[0:-1]
+    return url
+
+
 def verify_interface_online(url: str):
     """Verify if interface instance is reachable"""
     parsed = urlparse(url)
