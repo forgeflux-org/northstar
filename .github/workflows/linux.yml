@@ -73,7 +73,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: dist/
+          FOLDER: northstar/static/docs/openapi/
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
