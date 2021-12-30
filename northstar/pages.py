@@ -28,7 +28,7 @@ GIT_HASH = subprocess.run(
 ).stdout.decode("utf-8")
 
 
-GITHUB_LINK = f"{trim_url(settings.SOURCE_CODE)}/{GIT_HASH}"
+GITHUB_LINK = f"{trim_url(settings.SOURCE_CODE)}/tree/{GIT_HASH}"
 
 bp = Blueprint("STATIC_PAGES", __name__, url_prefix="/")
 
