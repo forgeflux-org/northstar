@@ -15,7 +15,7 @@ RUN make doc
 
 FROM python:3.10-slim-bullseye
 
-LABEL org.opencontainers.image.source https://github.com/forgefedv2/northstar
+LABEL org.opencontainers.image.source https://github.com/forgeflux-org/northstar
 
 RUN useradd -ms /bin/bash -u 1001 northstar
 RUN apt-get update && apt-get install -y ca-certificates make git
