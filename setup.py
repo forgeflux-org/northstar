@@ -1,7 +1,7 @@
 """
 North Star Application
 """
-# North Star ---  A lookup service for forged fed ecosystem
+# North Star ---  A lookup service for forgeflux ecosystem
 # Copyright © 2021 Aravinth Manivannan <realaravinth@batsense.net
 #
 # This program is free software: you can redistribute it and/or modify
