@@ -1,18 +1,18 @@
 <div align="center">
   <h1>North Star </h1> 
-  <b>A discovery service for ForgeFed ecosystem</b>
+  <b>A discovery service for ForgeFlux ecosystem</b>
 
-[![Documentation](https://img.shields.io/badge/docs-master-blue)](https://forgefedv2.github.io/northstar/openapi/)
+[![Documentation](https://img.shields.io/badge/docs-master-blue)](https://forgeflux-org.github.io/northstar/openapi/)
 [![Docker](https://img.shields.io/docker/pulls/forgedfed/northstar)](https://hub.docker.com/r/forgedfed/northstar)
-[![Build](https://github.com/forgefedv2/northstar/actions/workflows/linux.yml/badge.svg)](https://github.com/forgefedv2/northstar/actions/workflows/linux.yml)
-[![codecov](https://codecov.io/gh/forgefedv2/northstar/branch/master/graph/badge.svg?token=0100H4ECG4)](https://codecov.io/gh/forgefedv2/northstar)
+[![Build](https://github.com/forgeflux-org/northstar/actions/workflows/linux.yml/badge.svg)](https://github.com/forgeflux-org/northstar/actions/workflows/linux.yml)
+[![codecov](https://codecov.io/gh/forgeflux-org/northstar/branch/master/graph/badge.svg?token=0100H4ECG4)](https://codecov.io/gh/forgeflux-org/northstar)
 
 </div>
 
 ## Why
 
-ForgeFed allows for multiple
-[interfaces](https://github.com/forgefedv2/interface) to be run against
+ForgeFlux allows for multiple
+[interfaces](https://github.com/forgeflux-org/interface) to be run against
 a single software forge. Also, the protocol is flexible enough to
 support multiple types of software forges(GitLab, GitHub, etc). The
 protocol's decentralised nature makes it impossible to create a constant
@@ -26,18 +26,18 @@ resolved to URLs of interfaces that service the queried forge.
 ## Live instance
 
 A live instance is available at
-[https://northstar.forgefed.io/](https://northstar.forgefed.io/).
+[https://northstar.forgeflux.org/](https://northstar.forgeflux.org/).
 
 ## API Specification
 
 OpenAPI specification is available at
-[https://forgefedv2.github.io/northstar/openapi/](https://forgefedv2.github.io/northstar/openapi/).
+[https://forgeflux-org.github.io/northstar/](https://forgeflux-org.github.io/northstar/).
 
 ## Deployment
 
 Docker images are run against every commit on `master`. We are currently
 in alpha status, expect breaking changes while deploying images
-tagged`latest`.
+tagged `latest`.
 
 We'll freeze code once we have a stable release.
 
