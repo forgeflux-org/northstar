@@ -30,13 +30,6 @@
           application/json:
             schema:
               $ref: "./response/base-error.yaml"
-      '503':
-        description: >-
-          Registration failure, interface couldn't be reached via the URL provided
-        content:
-          application/json:
-            schema:
-              $ref: "./response/error-interface-unreachable.yaml"
 
 /api/v1/forge/interfaces:
   post:
