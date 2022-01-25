@@ -19,11 +19,9 @@ from northstar.app import create_app
 from northstar.api.v1.errors import (
     F_D_EMPTY_FORGE_LIST,
     F_D_INVALID_PAYLOAD,
-    F_D_INTERFACE_UNREACHABLE,
     F_D_NOT_URL,
 )
 from northstar.api.v1.interface import clean_url, not_url
-from northstar.api.v1.interface import verify_interface_online
 from northstar.db import get_db
 
 from test_utils import expect_error
@@ -132,37 +130,6 @@ def test_clean_url(client):
         assert cleaned.netloc == "example.com"
         assert cleaned.path == ""
         assert cleaned.query == ""
-
-
-def test_verify_instance_online(client, requests_mock):
-    interface_url = "https://interfac9.example.com/_ff/interface/versions"
-    resp = {"versions": ["v0.1.0"]}
-    requests_mock.get(interface_url, json=resp)
-
-    assert verify_interface_online(clean_url(interface_url)) is True
-
-    interface_url = "https://interface2.example.com/_ff/interface/versions"
-    resp = {"versions": []}
-    requests_mock.get(interface_url, json=resp)
-    assert verify_interface_online(clean_url(interface_url)) is not True
-
-    interface_url = "https://interface3.example.com/_ff/interface/versions"
-    resp = {"versions": []}
-    requests_mock.get(interface_url, json={})
-    assert verify_interface_online(clean_url(interface_url)) is not True
-
-
-def test_verify_instance_online_unreachable(client):
-    """Test unreachable interface verification"""
-    interface_url = "https://example.com"
-    assert verify_interface_online(clean_url(interface_url)) is not True
-
-    forges = ["https://forge.example.com", "ssh://forge.example.com"]
-
-    interface_exists = {"interface_url": interface_url, "forge_url": forges}
-
-    response = client.post("/api/v1/interface/register", json=interface_exists)
-    expect_error(response, F_D_INTERFACE_UNREACHABLE)
 
 
 def test_not_url(client):

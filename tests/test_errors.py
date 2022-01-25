@@ -15,8 +15,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from northstar.app import create_app
 
-from northstar.api.v1.errors import Error
-from northstar.api.v1.interface import F_D_EMPTY_FORGE_LIST, F_D_INTERFACE_UNREACHABLE
+from northstar.api.v1.errors import (
+    Error,
+    F_D_EMPTY_FORGE_LIST,
+    F_D_NO_REGISTERED_INTERFACES,
+    F_D_INVALID_PAYLOAD,
+    F_D_INTERNAL_SERVER_ERROR,
+    F_D_NOT_URL,
+)
 
 
 def test_errors(client):
@@ -28,4 +34,7 @@ def test_errors(client):
         assert resp.status.find(str(status)) is not -1
 
     verify_status(F_D_EMPTY_FORGE_LIST, 400)
-    verify_status(F_D_INTERFACE_UNREACHABLE, 503)
+    verify_status(F_D_NO_REGISTERED_INTERFACES, 400)
+    verify_status(F_D_INTERNAL_SERVER_ERROR, 500)
+    verify_status(F_D_INVALID_PAYLOAD, 400)
+    verify_status(F_D_NOT_URL, 400)

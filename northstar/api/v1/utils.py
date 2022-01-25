@@ -42,15 +42,3 @@ def trim_url(url: str) -> str:
     if url.endswith("/"):
         url = url[0:-1]
     return url
-
-
-def verify_interface_online(url: str):
-    """Verify if interface instance is reachable"""
-    parsed = urlparse(url)
-    path = "/_ff/interface/versions"
-    url = urlunparse((parsed.scheme, parsed.netloc, path, "", "", ""))
-    resp = requests.get(url)
-    if resp.status_code == 200:
-        data = resp.json()
-        return "versions" in data and len(data["versions"]) != 0
-    return False
