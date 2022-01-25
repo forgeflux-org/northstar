@@ -1,5 +1,5 @@
 {
-  "name": "forgefed-discovery-service-api",
+  "name": "forgeflux-discovery-service-api",
   "version": "0.1.1",
   "description": "This service is used to discover bridge interfaces that operate on forges.",
   "main": "index.js",
@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dat-adi/northstar.git"
+    "url": "git+https://github.com/forgeflux-org/northstar.git"
   },
   "license": "AGPL3",
   "bugs": {
-    "url": "https://github.com/dat-adi/northstar/issues"
+    "url": "https://github.com/forgeflux-org/northstar/issues"
   },
-  "homepage": "https://github.com/dat-adi/northstar#readme",
+  "homepage": "https://github.com/forgeflux-org/northstar#readme",
   "dependencies": {
     "@apidevtools/swagger-cli": "^4.0.4",
     "@stoplight/spectral": "^5.8.1",
