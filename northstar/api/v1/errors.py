@@ -28,7 +28,6 @@ class Error(Exception):
     error: str
     status: int
 
-
     def get_error(self):
         """Get error in serialziable form"""
         error = {}
