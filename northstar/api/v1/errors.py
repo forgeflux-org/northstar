@@ -63,6 +63,12 @@ F_D_EMPTY_FORGE_LIST = Error(
     status=400,
 )
 
+F_D_INTERFACE_UNREACHABLE = Error(
+    errcode="F_D_INTERFACE_UNREACHABLE",
+    error="The interface was unreachable with the publicly accessible URL provided",
+    status=503,
+)
+
 F_D_INVALID_PAYLOAD = Error(
     errcode="F_D_INVALID_PAYLOAD",
     error="Please submit valid payload",

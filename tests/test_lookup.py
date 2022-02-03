@@ -19,12 +19,14 @@ from northstar.app import create_app
 from northstar.api.v1.errors import (
     F_D_EMPTY_FORGE_LIST,
     F_D_INVALID_PAYLOAD,
+    F_D_INTERFACE_UNREACHABLE,
     F_D_NOT_URL,
     F_D_NO_REGISTERED_INTERFACES,
 )
 from northstar.api.v1.interface import clean_url, not_url
+from northstar.api.v1.interface import verify_interface_online
 
-from test_utils import expect_error
+from test_utils import expect_error, get_nodeinfo_index, get_nodeinfo_resp
 
 
 def lookup(client, payload: str):
@@ -35,9 +37,10 @@ def lookup(client, payload: str):
 def test_lookup(client, requests_mock):
     """Test interface registration handler"""
 
-    interface_url = "https://interface.example.com/_ff/interface/versions"
-    resp = {"versions": ["v0.1.0"]}
+    base = "https://interface.example.com"
+    (interface_url, resp) = get_nodeinfo_index(base)
     requests_mock.get(interface_url, json=resp)
+    requests_mock.get(resp["links"][0]["href"], json=get_nodeinfo_resp())
 
     forges = ["https://forge.example.com", "ssh://forge.example.com"]
 
