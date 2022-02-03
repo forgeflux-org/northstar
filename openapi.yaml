@@ -70,6 +70,21 @@ paths:
                     description: A human-readable error message
                     type: string
                     example: The forge list submited is empty. An interface should handle at  least one forge.
+        '503':
+          description: 'Registration failure, interface couldn''t be reached via the URL provided'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errcode:
+                    description: The F_D_INTERFACE_UNREACHABLE error code
+                    type: string
+                    example: F_D_INTERFACE_UNREACHABLE
+                  error:
+                    description: A human-readable error message
+                    type: string
+                    example: The interface was unreachable with the publicly accessible URL provided
   /api/v1/forge/interfaces:
     post:
       tags:
