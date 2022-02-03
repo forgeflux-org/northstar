@@ -1,0 +1,10 @@
+type: object
+properties:
+  errcode:
+    description: The F_D_INTERFACE_UNREACHABLE error code
+    type: string
+    example: F_D_INTERFACE_UNREACHABLE
+  error:
+    description: A human-readable error message
+    type: string
+    example: The interface was unreachable with the publicly accessible URL provided

@@ -19,20 +19,23 @@ from northstar.app import create_app
 from northstar.api.v1.errors import (
     F_D_EMPTY_FORGE_LIST,
     F_D_INVALID_PAYLOAD,
+    F_D_INTERFACE_UNREACHABLE,
     F_D_NOT_URL,
 )
 from northstar.api.v1.interface import clean_url, not_url
+from northstar.api.v1.interface import verify_interface_online
 from northstar.db import get_db
 
-from test_utils import expect_error
+from test_utils import expect_error, get_nodeinfo_index, get_nodeinfo_resp
 
 
 def test_interface_register(client, requests_mock):
     """Test interface registration handler"""
 
-    interface_url = "https://interface.example.com/_ff/interface/versions"
-    resp = {"versions": ["v0.1.0"]}
+    base = "https://interface.example.com"
+    (interface_url, resp) = get_nodeinfo_index(base)
     requests_mock.get(interface_url, json=resp)
+    requests_mock.get(resp["links"][0]["href"], json=get_nodeinfo_resp())
 
     forges = ["https://forge.example.com", "ssh://forge.example.com"]
 
@@ -130,6 +133,84 @@ def test_clean_url(client):
         assert cleaned.netloc == "example.com"
         assert cleaned.path == ""
         assert cleaned.query == ""
+
+
+def test_verify_instance_online(client, requests_mock):
+    tests = []
+
+    nodeinfo = get_nodeinfo_resp()
+    tests.append((1, nodeinfo, True))
+    n2 = get_nodeinfo_resp()
+    n2["metadata"]["forgeflux-protocols"] = ["foo"]
+    tests.append((2, n2, False))
+    n3 = get_nodeinfo_resp()
+    n3["metadata"] = ""
+    tests.append((3, n3, False))
+    tests.append((4, {}, False))
+
+    for (num, n, res) in tests:
+        base = f"https://interface{num}.example.com"
+        (interface_url, resp) = get_nodeinfo_index(base)
+        requests_mock.get(interface_url, json=resp)
+        requests_mock.get(resp["links"][0]["href"], json=n)
+        print(f"num: {num} res: {res} nodeinfo: {n}")
+        assert verify_interface_online(clean_url(interface_url)) is res
+
+    base = f"https://interface{6}.example.com"
+    (interface_url, resp) = get_nodeinfo_index(base)
+    requests_mock.get(interface_url, json=resp)
+    requests_mock.get(
+        resp["links"][0]["href"], json=get_nodeinfo_resp(), status_code=400
+    )
+    assert verify_interface_online(clean_url(interface_url)) is False
+
+    base = f"https://interface{7}.example.com"
+    (interface_url, resp) = get_nodeinfo_index(base)
+    requests_mock.get(interface_url, json=resp, status_code=400)
+    assert verify_interface_online(clean_url(interface_url)) is False
+
+    base = f"https://interface{8}.example.com"
+    (interface_url, resp) = get_nodeinfo_index(base)
+    resp["links"] = [{"href": "foo"}]
+    requests_mock.get(interface_url, json=resp)
+    assert verify_interface_online(clean_url(interface_url)) is False
+
+    base = f"https://interface{9}.example.com"
+    (interface_url, resp) = get_nodeinfo_index(base)
+    resp["links"] = [{"rel": "foo"}]
+    requests_mock.get(interface_url, json=resp)
+    assert verify_interface_online(clean_url(interface_url)) is False
+
+    base = f"https://interface{10}.example.com"
+    (interface_url, resp) = get_nodeinfo_index(base)
+    resp["links"][0]["rel"] = "foo"
+    requests_mock.get(interface_url, json=resp)
+    assert verify_interface_online(clean_url(interface_url)) is False
+
+    base = f"https://interface{11}.example.com"
+    (interface_url, resp) = get_nodeinfo_index(base)
+    resp["links"] = []
+    requests_mock.get(interface_url, json=resp)
+    assert verify_interface_online(clean_url(interface_url)) is False
+
+    base = f"https://interface{12}.example.com"
+    (interface_url, resp) = get_nodeinfo_index(base)
+    resp = {}
+    requests_mock.get(interface_url, json=resp)
+    assert verify_interface_online(clean_url(interface_url)) is False
+
+
+def test_verify_instance_online_unreachable(client):
+    """Test unreachable interface verification"""
+    interface_url = "https://example.com"
+    assert verify_interface_online(clean_url(interface_url)) is not True
+
+    forges = ["https://forge.example.com", "ssh://forge.example.com"]
+
+    interface_exists = {"interface_url": interface_url, "forge_url": forges}
+
+    response = client.post("/api/v1/interface/register", json=interface_exists)
+    expect_error(response, F_D_INTERFACE_UNREACHABLE)
 
 
 def test_not_url(client):

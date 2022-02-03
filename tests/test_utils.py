@@ -39,3 +39,30 @@ def test_trim_url():
     path = "/foo/bar"
     assert trim_url(path) == path
     assert trim_url(f"{path}/") == path
+
+
+def get_nodeinfo_index(base: str):
+    resp = {
+        "links": [
+            {
+                "href": f"{base}/.well-known/nodeinfo/2.0.json",
+                "rel": "http://nodeinfo.diaspora.software/ns/schema/2.0",
+            }
+        ]
+    }
+    return (f"{base}/.well-known/nodeinfo", resp)
+
+
+def get_nodeinfo_resp():
+    nodeinfo = {
+        "version": "2.0",
+        "software": {
+            "name": "ForgeFlux Interface",
+            "version": "0.1.0-alpha",
+        },
+        "services": {"inbound": [], "outbound": []},
+        "protocols": ["activitypub"],
+        "openRegistrations": False,
+        "metadata": {"forgeflux-protocols": ["interface.forgeflux.org"]},
+    }
+    return nodeinfo

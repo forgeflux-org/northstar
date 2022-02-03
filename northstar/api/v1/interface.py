@@ -16,12 +16,13 @@ Interface related routes
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 from flask import Blueprint, jsonify, request
-from .utils import clean_url, not_url
+from .utils import clean_url, not_url, verify_interface_online
 
 from northstar.db import get_db
 from .errors import (
     F_D_EMPTY_FORGE_LIST,
     F_D_INVALID_PAYLOAD,
+    F_D_INTERFACE_UNREACHABLE,
     F_D_NOT_URL,
 )
 
@@ -52,6 +53,9 @@ def register():
         new_forge_url.append(url)
 
     forge_url = new_forge_url
+
+    if not verify_interface_online(interface_url):
+        return F_D_INTERFACE_UNREACHABLE.get_error_resp()
 
     conn = get_db()
     cur = conn.cursor()
