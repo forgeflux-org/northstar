@@ -58,5 +58,7 @@ def migrate_db_command():
 
 
 def init_app(app):
+    with app.app_context():
+        init_db()
     app.teardown_appcontext(close_db)
     app.cli.add_command(migrate_db_command)

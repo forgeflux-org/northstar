@@ -27,19 +27,18 @@ from .pages import bp as pages
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        DATABASE=os.path.join(app.instance_path, "northstar.db"),
-    )
 
-    db.init_app(app)
-
-    if test_config is None:
-        app.config.from_pyfile("config.py", silent=True)
-    else:
+    if test_config:
         app.config.from_mapping(test_config)
+
+    if "DATABASE" not in app.config:
+        app.config.from_mapping(
+            DATABASE=os.path.join(app.instance_path, "northstar.db"),
+        )
 
     try:
         os.makedirs(app.instance_path)
+        db.init_app(app)
     except OSError:
         pass
 

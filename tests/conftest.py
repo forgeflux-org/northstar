@@ -20,7 +20,7 @@ import requests_mock
 from dynaconf import settings
 
 from northstar.app import create_app
-from northstar.db import get_db, init_db
+from northstar.db import get_db, init_app
 
 
 @pytest.fixture
@@ -36,8 +36,9 @@ def app():
         }
     )
 
+
     with app.app_context():
-        init_db()
+        init_app(app)
 
     yield app
 
