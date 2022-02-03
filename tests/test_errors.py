@@ -23,7 +23,7 @@ def test_errors(client):
     """Test interface registration handler"""
 
     def verify_status(e: Error, status: int):
-        assert e.status() == status
+        assert e.status == status
         resp = e.get_error_resp()
         assert resp.status.find(str(status)) is not -1
 

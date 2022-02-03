@@ -1,0 +1,114 @@
+{% extends 'base.html' %} {% block title %}Search | {% endblock %} {% block main
+%}
+
+<style>
+	.main {
+		width: 100%;
+		flex-direction: column;
+		padding: 0;
+		margin: 0;
+	}
+
+	main {
+		flex: auto;
+	}
+
+	.search__container {
+		height: 80px;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		width: 80%;
+	}
+
+	.result_container {
+		flex: 4;
+		margin: 20px;
+	}
+
+	.search__container > form {
+		flex: 4;
+	}
+
+	.search__bar {
+		width: 100%;
+	}
+
+	#search {
+		width: 100%;
+	}
+
+	.result {
+		width: 100%;
+		border-bottom: 1px dashed #333;
+		margin: 5px 0;
+		padding: 20px 0px;
+	}
+
+	.result__container {
+		width: 80%;
+		margin: auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 4;
+		margin-top: 20px;
+	}
+
+	.result:hover {
+		background-color: lightgray;
+		cursor: pointer;
+	}
+
+	.result:last-child {
+		border-bottom: none;
+	}
+
+	.results__number {
+		width: 80%;
+		text-align:left;
+	}
+</style>
+
+<section class="main">
+	<div class="search__container">
+		<form action="/search" method="post">
+			<label for="search">Search</label>
+			<div class="search__bar">
+				<input
+					placeholder="Search for interfaces"
+					type="text/submit/hidden/button"
+					name="search"
+					required
+					id="search"
+					value="{{ search_item }}"
+				/>
+				<button class="search__button" type="submit">
+					<img
+						class="search__icon"
+						src="{{ url_for('static', filename='search.svg') }}"
+						alt="Search icon"
+					/>
+				</button>
+			</div>
+		</form>
+	</div>
+
+	{% set len = interfaces | length %} {% if len > 1 %}
+	<p class="results__number">Found {{ len }} items</p>
+	{% elif len == 0 %}
+	<p class="results__number">Found no results</p>
+	{% else %}
+	<p class="results__number">Found {{ len }} item</p>
+	{% endif %}
+
+	<div class="result__container">
+		{% for interface in interfaces %}
+		<div class="result">
+			<a href="{{ interface }}">{{ interface }}</a>
+		</div>
+		{% endfor %}
+	</div>
+</section>
+
+{% endblock %}

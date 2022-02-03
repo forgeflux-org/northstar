@@ -22,7 +22,7 @@ def expect_error(response, err: Error) -> bool:
     data = response.json
     return all(
         [
-            str(err.status()) in response.status,
+            str(err.status) in response.status,
             err.get_error()["error"] == data["error"],
             err.get_error()["errcode"] == data["errcode"],
         ]
