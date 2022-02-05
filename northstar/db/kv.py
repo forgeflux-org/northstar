@@ -66,14 +66,6 @@ class DBMap:
                 );""",
                 (forge, interface_url),
             )
-            cur.execute(
-                """
-            INSERT OR IGNORE INTO
-                fts_interface_forge (forge_url, interface_url)
-            VALUES ( ?, ? );""",
-                (forge, interface_url),
-            )
-
         conn.commit()
 
     @staticmethod
