@@ -21,15 +21,27 @@ from northstar.errors import (
     Error,
     F_D_INTERFACE_UNREACHABLE,
     F_D_EMPTY_FORGE_LIST,
+    F_D_NO_REGISTERED_INTERFACES,
 )
 
 
 def test_db_map(app):
     interface_url = "https://interface.example.com"
     forges = ["https://forge.example.com", "ssh://forge.example.com"]
+
+    with pytest.raises(Error) as error:
+        DBMap.get_interfaces_exact_match(forges[0])
+    assert error, F_D_NO_REGISTERED_INTERFACES
+
+    with pytest.raises(Error) as error:
+        DBMap.get_interfaces_partial_match(forges[0])
+    assert error, F_D_NO_REGISTERED_INTERFACES
+
     DBMap.register(forge_urls=forges, interface_url=interface_url)
     for forge in forges:
         assert DBMap.get_interfaces_exact_match(forge)[0] == interface_url
+        assert DBMap.get_interfaces_partial_match(forge[0:5])[0] == interface_url
+        assert DBMap.get_interfaces_partial_match(f'"{forge[0:5]}"')[0] == interface_url
 
     with pytest.raises(Error) as error:
         DBMap.register(forge_urls=forges, interface_url="foo")
@@ -41,4 +53,3 @@ def test_db_map(app):
 
     with pytest.raises(Error) as error:
         DBMap.register(forge_urls=["foo"], interface_url=interface_url)
-    assert error, F_D_NOT_URL

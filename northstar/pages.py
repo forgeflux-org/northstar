@@ -28,7 +28,7 @@ from flask import (
 )
 from dynaconf import settings
 
-from northstar.db import get_db
+from northstar.db import DBMap
 from northstar.utils import trim_url, clean_url
 from northstar.errors import (
     Error,
@@ -59,27 +59,6 @@ def index():
     )
 
 
-def interface__lookup(forge_url: str):
-    conn = get_db()
-    cur = conn.cursor()
-
-    # Retrieve the interface and forge from the database
-    interface_results = cur.execute(
-        "SELECT interface_url FROM northstar_lookup WHERE forge_url LIKE (?)",
-        (forge_url,),
-    ).fetchall()
-    conn.commit()
-
-    # Check if we received any results
-    if len(interface_results) == 0:
-        raise F_D_NO_REGISTERED_INTERFACES
-
-    res = []
-    for r in interface_results:
-        res.append(r[0])
-    return res
-
-
 @bp.route("/search", methods=["POST"])
 def search():
     """Search Page"""
@@ -105,7 +84,7 @@ def search():
     search_item = request.form["search"]
 
     try:
-        interfaces = interface__lookup(search_item)
+        interfaces = DBMap.get_interfaces_partial_match(search_item)
         return render_template(
             "result.html",
             version=VERSION,

@@ -66,6 +66,15 @@ class DBMap:
                 );""",
                 (forge, interface_url),
             )
+
+            cur.execute(
+                """
+            INSERT OR IGNORE INTO
+                fts_interface_forge (forge_url, interface_url)
+            VALUES ( ?, ? );""",
+                (forge, interface_url),
+            )
+
         conn.commit()
 
     @staticmethod
@@ -83,6 +92,33 @@ class DBMap:
         interface_results = cur.execute(
             "SELECT interface_url FROM northstar_lookup WHERE forge_url = (?)",
             (clean_url(forge_url),),
+        ).fetchall()
+        conn.commit()
+
+        # Check if we received any results
+        if len(interface_results) == 0:
+            raise F_D_NO_REGISTERED_INTERFACES
+
+        res = []
+        for r in interface_results:
+            res.append(r[0])
+        return res
+
+    @staticmethod
+    def get_interfaces_partial_match(forge_url: str):
+        conn = get_db()
+        cur = conn.cursor()
+
+        if not forge_url.startswith('"'):
+            forge_url = f'"{forge_url}'
+
+        if not forge_url.endswith('"'):
+            forge_url = f'{forge_url}"'
+
+        # Retrieve the interface and forge from the database
+        interface_results = cur.execute(
+            "SELECT interface_url FROM fts_interface_forge WHERE forge_url MATCH (?)",
+            (forge_url,),
         ).fetchall()
         conn.commit()
 
