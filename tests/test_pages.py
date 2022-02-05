@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from flask import Response
 
-from northstar.api.v1.errors import F_D_INVALID_PAYLOAD
+from northstar.errors import F_D_INVALID_PAYLOAD
 
 from test_utils import expect_error, get_nodeinfo_index, get_nodeinfo_resp
 

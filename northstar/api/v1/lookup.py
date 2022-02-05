@@ -16,10 +16,14 @@ Lookup related routes
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 from flask import Blueprint, jsonify, request
-from .utils import clean_url, not_url
 
 from northstar.db import get_db
-from .errors import F_D_NOT_URL, F_D_NO_REGISTERED_INTERFACES, F_D_INVALID_PAYLOAD
+from northstar.errors import (
+    F_D_NOT_URL,
+    F_D_NO_REGISTERED_INTERFACES,
+    F_D_INVALID_PAYLOAD,
+)
+from northstar.utils import clean_url, not_url
 
 
 bp = Blueprint("API_V1_INTERFACE_LOOKUP", __name__, url_prefix="/forge")
