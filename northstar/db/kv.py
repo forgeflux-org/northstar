@@ -1,4 +1,5 @@
 # North Star ---  A lookup service for forged fed ecosystem
+# Copyright © 2022 G V Datta Adithya <dat.adithya@gmail.com>
 # Copyright © 2022 Aravinth Manivannan <realaravinth@batsense.net>
 #
 # This program is free software: you can redistribute it and/or modify
