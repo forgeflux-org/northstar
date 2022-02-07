@@ -16,14 +16,13 @@
 from urllib.parse import urlparse, urlunparse
 
 from northstar.app import create_app
-from northstar.api.v1.errors import (
+from northstar.errors import (
     F_D_EMPTY_FORGE_LIST,
     F_D_INVALID_PAYLOAD,
     F_D_INTERFACE_UNREACHABLE,
     F_D_NOT_URL,
 )
-from northstar.api.v1.interface import clean_url, not_url
-from northstar.api.v1.interface import verify_interface_online
+from northstar.utils import clean_url, not_url, verify_interface_online
 from northstar.db import get_db
 
 from test_utils import expect_error, get_nodeinfo_index, get_nodeinfo_resp
@@ -88,9 +87,9 @@ def test_interface_register(client, requests_mock):
 
 def test_interface_register_errors(client, requests_mock):
     """Test interface errors"""
-    interface_url = "https://interface.example.com/_ff/interface/versions"
-    resp = {"versions": ["v0.1.0"]}
+    (interface_url, resp) = get_nodeinfo_index("https://interface.example.com")
     requests_mock.get(interface_url, json=resp)
+    requests_mock.get(resp["links"][0]["href"], json=get_nodeinfo_resp())
 
     forges = ["https://forge.example.com", "ssh://forge.example.com"]
 
@@ -200,12 +199,14 @@ def test_verify_instance_online(client, requests_mock):
     assert verify_interface_online(clean_url(interface_url)) is False
 
 
-def test_verify_instance_online_unreachable(client):
+def test_verify_instance_online_unreachable(requests_mock, client):
     """Test unreachable interface verification"""
     interface_url = "https://example.com"
-    assert verify_interface_online(clean_url(interface_url)) is not True
-
     forges = ["https://forge.example.com", "ssh://forge.example.com"]
+    (nodeinfo, _) = get_nodeinfo_index(interface_url)
+    requests_mock.get(nodeinfo, json={})
+
+    assert verify_interface_online(clean_url(interface_url)) is not True
 
     interface_exists = {"interface_url": interface_url, "forge_url": forges}
 

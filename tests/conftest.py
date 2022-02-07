@@ -36,7 +36,6 @@ def app():
         }
     )
 
-
     with app.app_context():
         init_app(app)
 

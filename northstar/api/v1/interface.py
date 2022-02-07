@@ -16,15 +16,15 @@ Interface related routes
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 from flask import Blueprint, jsonify, request
-from .utils import clean_url, not_url, verify_interface_online
 
-from northstar.db import get_db
-from .errors import (
-    F_D_EMPTY_FORGE_LIST,
-    F_D_INVALID_PAYLOAD,
-    F_D_INTERFACE_UNREACHABLE,
+from northstar.db import DBMap
+from northstar.errors import (
     F_D_NOT_URL,
+    F_D_INVALID_PAYLOAD,
+    Error,
+    F_D_INTERFACE_UNREACHABLE,
 )
+from northstar.utils import clean_url, not_url, verify_interface_online
 
 bp = Blueprint("API_V1_INTERFACE", __name__, url_prefix="/interface")
 
@@ -34,51 +34,22 @@ def register():
     """Register interface"""
 
     data = request.get_json()
-    if any(["forge_url" not in data, "interface_url" not in data]):
-        return F_D_INVALID_PAYLOAD.get_error_resp()
 
-    forge_url = data["forge_url"]
-    interface_url = clean_url(data["interface_url"])
-    if not_url(interface_url):
-        return F_D_NOT_URL.get_error_resp()
+    try:
+        if any(["forge_url" not in data, "interface_url" not in data]):
+            raise F_D_INVALID_PAYLOAD
 
-    if len(forge_url) == 0:
-        return F_D_EMPTY_FORGE_LIST.get_error_resp()
+        interface_url = clean_url(data["interface_url"])
+        if not_url(interface_url):
+            raise F_D_NOT_URL
 
-    new_forge_url = []
-    for forge in forge_url:
-        url = clean_url(forge)
-        if not_url(url):
-            return F_D_NOT_URL.get_error_resp()
-        new_forge_url.append(url)
+        if not verify_interface_online(interface_url):
+            raise F_D_INTERFACE_UNREACHABLE
 
-    forge_url = new_forge_url
-
-    if not verify_interface_online(interface_url):
-        return F_D_INTERFACE_UNREACHABLE.get_error_resp()
-
-    conn = get_db()
-    cur = conn.cursor()
-    cur.execute(
-        "INSERT OR IGNORE INTO northstar_interfaces (URL) VALUES (?);",
-        (interface_url,),
-    )
-    for forge in forge_url:
-        cur.execute(
-            "INSERT OR IGNORE INTO northstar_forges (URL) VALUES (?);", (forge,)
-        )
-    conn.commit()
-
-    for forge in forge_url:
-        cur.execute(
-            """
-        INSERT OR IGNORE INTO
-            northstar_interface_forge_directory (forge_id, interface_id)
-        VALUES (
-                (SELECT ID FROM northstar_forges WHERE URL = ?),
-                (SELECT ID FROM northstar_interfaces WHERE URL = ?)
-            );""",
-            (forge, interface_url),
-        )
-    conn.commit()
-    return jsonify({})
+        DBMap.register(forge_urls=data["forge_url"], interface_url=interface_url)
+        return jsonify({})
+    except Error as error:
+        return error.get_error_resp()
+    except Exception as error:
+        print(error)
+        raise error

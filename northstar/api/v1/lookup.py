@@ -16,11 +16,9 @@ Lookup related routes
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 from flask import Blueprint, jsonify, request
-from .utils import clean_url, not_url
 
-from northstar.db import get_db
-from .errors import F_D_NOT_URL, F_D_NO_REGISTERED_INTERFACES, F_D_INVALID_PAYLOAD
-
+from northstar.db import DBMap
+from northstar.errors import Error, F_D_INVALID_PAYLOAD
 
 bp = Blueprint("API_V1_INTERFACE_LOOKUP", __name__, url_prefix="/forge")
 
@@ -34,32 +32,14 @@ def lookup():
 
     # Check if the data consists of the required field
     if "forge_url" in data:
-        # Retrieves the raw forge url
-        forge_url = data["forge_url"]
 
-        # Check if the given forge_url is valid
-        if len(forge_url) == 0 or not_url(forge_url):
-            return F_D_NOT_URL.get_error_resp()
-
-        # Connect to the database
-        conn = get_db()
-        cur = conn.cursor()
-
-        # Retrieve the interface and forge from the database
-        interface_results = cur.execute(
-            "SELECT interface_url FROM northstar_lookup WHERE forge_url = (?)",
-            (clean_url(forge_url),),
-        ).fetchall()
-        conn.commit()
-
-        # Check if we received any results
-        if len(interface_results) == 0:
-            return F_D_NO_REGISTERED_INTERFACES.get_error_resp()
-
-        res = list()
-        for r in interface_results:
-            res.append(r[0])
-        return jsonify(res)
-
+        try:
+            res = DBMap.get_interfaces_exact_match(forge_url=data["forge_url"])
+            return jsonify(res)
+        except Error as error:
+            return error.get_error_resp()
+        except Exception as error:
+            print(error)
+            raise error
     # If all else fails, throw an error.
     return F_D_INVALID_PAYLOAD.get_error_resp()

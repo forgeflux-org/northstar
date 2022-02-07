@@ -15,8 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from northstar.app import create_app
 
-from northstar.api.v1.errors import Error
-from northstar.api.v1.interface import F_D_EMPTY_FORGE_LIST, F_D_INTERFACE_UNREACHABLE
+from northstar.errors import Error, F_D_EMPTY_FORGE_LIST, F_D_INTERFACE_UNREACHABLE
 
 
 def test_errors(client):

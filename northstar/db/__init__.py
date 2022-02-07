@@ -13,3 +13,4 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from .conn import get_db, init_app, init_db
+from .kv import DBMap

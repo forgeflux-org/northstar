@@ -29,8 +29,8 @@ from flask import (
 from dynaconf import settings
 
 from northstar.db import get_db
-from northstar.api.v1.utils import trim_url, clean_url
-from northstar.api.v1.errors import (
+from northstar.utils import trim_url, clean_url
+from northstar.errors import (
     Error,
     F_D_NO_REGISTERED_INTERFACES,
     F_D_INVALID_PAYLOAD,

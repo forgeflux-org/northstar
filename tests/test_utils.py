@@ -13,8 +13,8 @@
 # GNU Affero General Public License for more details.
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from northstar.api.v1.errors import Error
-from northstar.api.v1.utils import trim_url
+from northstar.errors import Error
+from northstar.utils import trim_url
 
 
 def expect_error(response, err: Error) -> bool:
